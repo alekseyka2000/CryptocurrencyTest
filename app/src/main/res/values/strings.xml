@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CryptocurrencyTest</string>
+    <string name="application_logo">Application logo</string>
+    <string name="application_version">Application version</string>
 </resources>
