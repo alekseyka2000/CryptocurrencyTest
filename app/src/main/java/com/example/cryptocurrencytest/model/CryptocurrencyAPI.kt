@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface CryptocurrencyAPI {
 
     @GET("Europe/Minsk")
-    fun getCurrentDateInMinsk (): Single<String>
+    fun getCurrentDateInMinsk (): Single<CryptocurrencyAPI>
 }
