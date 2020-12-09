@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.entity
+package com.example.cryptocurrencytest.model.entity
 
 data class CryptocurrencyList (
 	val status : Status,

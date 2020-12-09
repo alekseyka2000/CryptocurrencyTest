@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.entity
+package com.example.cryptocurrencytest.model.entity
 
 data class Status (
 	val timestamp : String,
