@@ -5,17 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptocurrencytest.databinding.ActivityMainBinding
 import com.example.cryptocurrencytest.di.cryptocurrencyServiceModule
 import com.example.cryptocurrencytest.views.StartFragment
-import com.example.cryptocurrencytest.views.flow.FlowFragment
+import com.example.cryptocurrencytest.views.FlowFragment
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.schedule
 
 @KoinApiExtension
-class MainActivity : AppCompatActivity(), KoinComponent {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val startFragment by lazy { StartFragment() }
@@ -38,18 +38,6 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         }
 
         initKoin()
-
-//        val cryptocurrencyService by inject<CryptocurrencyService>()
-//
-//        val view: TextView = findViewById(R.id.text)
-//        cryptocurrencyService.getCryptocurrency()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                { view.text = it.data[1].name },
-//                { view.text = it.message }
-//            )
-
     }
 
     private fun initKoin() {
