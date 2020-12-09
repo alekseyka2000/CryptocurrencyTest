@@ -2,4 +2,6 @@
     <string name="app_name">CryptocurrencyTest</string>
     <string name="application_logo">Application logo</string>
     <string name="application_version">Application version</string>
+    <string name="List">Список</string>
+    <string name="exchange">Конвертер валют</string>
 </resources>

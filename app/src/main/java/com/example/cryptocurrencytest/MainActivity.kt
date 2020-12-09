@@ -1,18 +1,11 @@
 package com.example.cryptocurrencytest
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import com.example.cryptocurrencytest.databinding.ActivityMainBinding
 import com.example.cryptocurrencytest.di.cryptocurrencyServiceModule
-import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyService
 import com.example.cryptocurrencytest.views.StartFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import org.koin.android.ext.android.inject
+import com.example.cryptocurrencytest.views.flow.FlowFragment
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinApiExtension
@@ -25,9 +18,9 @@ import kotlin.concurrent.schedule
 class MainActivity : AppCompatActivity(), KoinComponent {
 
     private lateinit var binding: ActivityMainBinding
-    private val startFragment by lazy {StartFragment()}
+    private val startFragment by lazy { StartFragment() }
+    private val flowFragment by lazy { FlowFragment() }
 
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -40,6 +33,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         Timer().schedule(2000) {
             supportFragmentManager.beginTransaction()
                 .remove(startFragment)
+                .add(binding.container.id, flowFragment)
                 .commit()
         }
 
