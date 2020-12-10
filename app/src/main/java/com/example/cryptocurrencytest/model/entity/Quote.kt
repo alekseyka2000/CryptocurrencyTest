@@ -1,5 +1,7 @@
 package com.example.cryptocurrencytest.model.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class Quote (
-	val uSD : USD
+	@SerializedName("USD") val uSD : USD
 )

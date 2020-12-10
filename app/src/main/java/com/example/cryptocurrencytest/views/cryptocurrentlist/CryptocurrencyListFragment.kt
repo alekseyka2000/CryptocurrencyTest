@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.views.cryptocurrentlistfragment
+package com.example.cryptocurrencytest.views.cryptocurrentlist
 
 import android.os.Bundle
 import android.util.Log

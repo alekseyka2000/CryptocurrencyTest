@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.views.cryptocurrentlistfragment
+package com.example.cryptocurrencytest.views.cryptocurrentlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,13 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptocurrencytest.R
-import com.example.cryptocurrencytest.model.entity.Data
+import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import kotlin.properties.Delegates
 
 class CryptocurrencyListAdapter(private val cellClickListener: CellClickListener) :
     RecyclerView.Adapter<CryptocurrencyListAdapter.CryptocurrencyViewHolder>() {
 
-    var listCryptocurrencys: List<Data> by Delegates.observable(emptyList()){
+    var listCryptocurrencys: List<PrepareCryptocurrencyData> by Delegates.observable(emptyList()){
             _, oldValue, newValue ->
         notifyChanges(oldValue, newValue)
     }
@@ -26,7 +26,7 @@ class CryptocurrencyListAdapter(private val cellClickListener: CellClickListener
     override fun onBindViewHolder(holder: CryptocurrencyViewHolder, position: Int) {
         holder.bind(listCryptocurrencys[position])
         holder.itemView.setOnClickListener {
-            cellClickListener.onCellClickListener(listCryptocurrencys[position].name)
+            cellClickListener.onCellClickListener(listCryptocurrencys[position].cryptocurrencyName)
         }
     }
 
@@ -45,17 +45,17 @@ class CryptocurrencyListAdapter(private val cellClickListener: CellClickListener
             cryptocurrencyPriceUSDText = itemView.findViewById(R.id.cryptocurrencyPriceUDS)
         }
 
-        fun bind(cryptocurrency: Data) {
+        fun bind(cryptocurrency: PrepareCryptocurrencyData) {
             cryptocurrencyImageView?.setImageResource(R.drawable.ic_bitcoin)
-            cryptocurrencyNameText?.text = cryptocurrency.name
-            cryptocurrencyPriceUSDText?.text = cryptocurrency.total_supply.toString()
+            cryptocurrencyNameText?.text = cryptocurrency.cryptocurrencyName
+            cryptocurrencyPriceUSDText?.text = cryptocurrency.cryptocurrencyPriceUSD
         }
     }
 
-    private fun notifyChanges(oldList: List<Data>, newList: List<Data>) {
+    private fun notifyChanges(oldList: List<PrepareCryptocurrencyData>, newList: List<PrepareCryptocurrencyData>) {
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].id == newList[newItemPosition].id
+                return oldList[oldItemPosition].cryptocurrencyName == newList[newItemPosition].cryptocurrencyName
             }
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return oldList[oldItemPosition] == newList[newItemPosition]

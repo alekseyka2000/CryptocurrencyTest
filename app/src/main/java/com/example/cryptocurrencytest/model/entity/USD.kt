@@ -1,11 +1,11 @@
 package com.example.cryptocurrencytest.model.entity
 
 data class USD (
-	val price : Double,
-	val volume_24h : Double,
-	val percent_change_1h : Double,
-	val percent_change_24h : Double,
-	val percent_change_7d : Double,
-	val market_cap : Int,
+	val price : String,
+	val volume_24h : String,
+	val percent_change_1h : String,
+	val percent_change_24h : String,
+	val percent_change_7d : String,
+	val market_cap : String,
 	val last_updated : String
 )
