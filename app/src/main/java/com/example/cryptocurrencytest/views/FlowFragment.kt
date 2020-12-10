@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cryptocurrencytest.R
 import com.example.cryptocurrencytest.databinding.FragmentFlowBinding
-import com.example.cryptocurrencytest.views.CryptocurrentListFragment.CryptocurrencyListFragment
+import com.example.cryptocurrencytest.views.cryptocurrentlistfragment.CryptocurrencyListFragment
 import org.koin.core.component.KoinApiExtension
 
 @KoinApiExtension

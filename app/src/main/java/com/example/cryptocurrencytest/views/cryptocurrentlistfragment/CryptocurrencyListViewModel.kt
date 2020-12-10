@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.views.CryptocurrentListFragment
+package com.example.cryptocurrencytest.views.cryptocurrentlistfragment
 
 import android.annotation.SuppressLint
 import android.util.Log

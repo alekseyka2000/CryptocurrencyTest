@@ -4,4 +4,5 @@
     <string name="application_version">Application version</string>
     <string name="List">Список</string>
     <string name="exchange">Конвертер валют</string>
+    <string name="cryptocurrencyimage">cryptocurrencyImage</string>
 </resources>
