@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.cryptocurrencytest.R
-import org.koin.core.component.KoinApiExtension
+import io.reactivex.disposables.CompositeDisposable
+import org.koin.android.viewmodel.ext.android.viewModel
 
-@KoinApiExtension
 class ExchangeFragment : Fragment() {
 
+    private val exchangeViewModel: ExchangeViewModel by viewModel()
+    private lateinit var subscriptions: CompositeDisposable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,5 +24,13 @@ class ExchangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        subscriptions = CompositeDisposable()
+
+        subscriptions.add(exchangeViewModel.fetchCryptocurencyData())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        subscriptions.clear()
     }
 }

@@ -13,22 +13,19 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 @KoinApiExtension
-class CryptocurrencyListViewModel : ViewModel(), KoinComponent {
+class CryptocurrencyListViewModel(private val repository: Repository) : ViewModel() {
 
     private val mutableLiveData = MutableLiveData<List<PrepareCryptocurrencyData>>()
     val liveData: LiveData<List<PrepareCryptocurrencyData>> = mutableLiveData
-    private val repository by inject<Repository>()
 
     @SuppressLint("CheckResult")
-    fun fetchCryptocurencyData() {
-        repository.fetchCryptocurencyData()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    mutableLiveData.value = it
-                    Log.d("log", it.toString())
-                },
-                { Log.d("log", "${it.message}") }
-            )
-    }
+    fun fetchCryptocurencyData() = repository.fetchCryptocurencyData()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            {
+                mutableLiveData.value = it
+                Log.d("log", it.toString())
+            },
+            { Log.d("log", "${it.message}") }
+        )
 }

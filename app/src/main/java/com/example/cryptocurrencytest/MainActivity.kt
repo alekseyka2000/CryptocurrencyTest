@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptocurrencytest.databinding.ActivityMainBinding
 import com.example.cryptocurrencytest.di.cryptocurrencyServiceModule
+import com.example.cryptocurrencytest.di.viewModelModule
 import com.example.cryptocurrencytest.views.StartFragment
 import com.example.cryptocurrencytest.views.FlowFragment
 import org.koin.android.ext.koin.androidContext
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         startKoin {
             androidLogger()
             androidContext(this@MainActivity)
-            modules(cryptocurrencyServiceModule)
+            modules(cryptocurrencyServiceModule, viewModelModule)
         }
     }
 }
