@@ -2,15 +2,10 @@ package com.example.cryptocurrencytest
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.cryptocurrencytest.databinding.ActivityMainBinding
-import com.example.cryptocurrencytest.di.cryptocurrencyServiceModule
-import com.example.cryptocurrencytest.di.viewModelModule
-import com.example.cryptocurrencytest.views.StartFragment
-import com.example.cryptocurrencytest.views.FlowFragment
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinApiExtension
-import org.koin.core.context.startKoin
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -18,23 +13,18 @@ import kotlin.concurrent.schedule
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val startFragment by lazy { StartFragment() }
-    private val flowFragment by lazy { FlowFragment() }
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction()
-            .add(binding.container.id, startFragment)
-            .commit()
+        navController = this.findNavController(R.id.container)
+        navController.navigate(R.id.action_flowFragment_to_startFragment)
 
         Timer().schedule(2000) {
-            supportFragmentManager.beginTransaction()
-                .remove(startFragment)
-                .add(binding.container.id, flowFragment)
-                .commit()
+            navController.navigate(R.id.action_startFragment_to_flowFragment)
         }
     }
 }
