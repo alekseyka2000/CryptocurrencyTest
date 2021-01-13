@@ -35,10 +35,10 @@ class CryptocurrencyListFragment : Fragment(), CellClickListener {
 
         subscriptions = CompositeDisposable()
 
-        binding.list.apply {
-            layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.context)
-            adapter = contactAdapter
-        }
+//        binding.list.apply {
+//            layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.context)
+//            adapter = contactAdapter
+//        }
         cryptocurrencyViewModel.liveData.observe(viewLifecycleOwner, { list ->
             contactAdapter.listCryptocurrencys = list
         })

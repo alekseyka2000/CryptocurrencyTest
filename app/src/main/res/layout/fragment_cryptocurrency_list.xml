@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".views.cryptocurrentlist.CryptocurrencyListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <TextView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:text="djjksdjfksdjf" />
+
+ <!--   <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /> - -->
 
 </FrameLayout>

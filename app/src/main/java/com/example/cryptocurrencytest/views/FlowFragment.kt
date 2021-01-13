@@ -15,7 +15,7 @@ import org.koin.core.component.KoinApiExtension
 class FlowFragment : Fragment() {
 
     private var _binding: FragmentFlowBinding? = null
-    private val binding = _binding!!
+    private val binding get() = _binding!!
     private val listFragment by lazy { CryptocurrencyListFragment() }
     private val exchangeFragment by lazy { ExchangeFragment() }
 

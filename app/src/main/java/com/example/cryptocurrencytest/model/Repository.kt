@@ -11,9 +11,8 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class Repository(private val cryptocurrencyService: CryptocurrencyService): KoinComponent {
+class Repository(private val cryptocurrencyService: CryptocurrencyService) {
 
-    @SuppressLint("CheckResult")
     fun fetchCryptocurencyData() : Single<List<PrepareCryptocurrencyData>> =
         cryptocurrencyService.getCryptocurrency()
             .map { Mapper().invoke(it) }

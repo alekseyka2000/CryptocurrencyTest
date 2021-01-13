@@ -36,15 +36,5 @@ class MainActivity : AppCompatActivity() {
                 .add(binding.container.id, flowFragment)
                 .commit()
         }
-
-        initKoin()
-    }
-
-    private fun initKoin() {
-        startKoin {
-            androidLogger()
-            androidContext(this@MainActivity)
-            modules(cryptocurrencyServiceModule, viewModelModule)
-        }
     }
 }
