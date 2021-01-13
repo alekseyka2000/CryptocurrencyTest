@@ -18,14 +18,13 @@ class CryptocurrencyListViewModel(private val repository: Repository) : ViewMode
     private val mutableLiveData = MutableLiveData<List<PrepareCryptocurrencyData>>()
     val liveData: LiveData<List<PrepareCryptocurrencyData>> = mutableLiveData
 
-    @SuppressLint("CheckResult")
     fun fetchCryptocurencyData() = repository.fetchCryptocurencyData()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             {
                 mutableLiveData.value = it
-                Log.d("log", it.toString())
+                Log.d("logi", it.toString())
             },
-            { Log.d("log", "${it.message}") }
+            { Log.d("logi", "${it.message}") }
         )
 }
