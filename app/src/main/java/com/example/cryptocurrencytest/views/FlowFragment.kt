@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.cryptocurrencytest.R
 import com.example.cryptocurrencytest.databinding.FragmentFlowBinding
 import org.koin.core.component.KoinApiExtension
 
@@ -29,11 +30,8 @@ class FlowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navController = binding.containerFlow.findNavController()
-
-        NavigationUI.setupWithNavController(
-            binding.navView,
-            navController
-        )
+        val navController =
+            (childFragmentManager.findFragmentById(R.id.containerFlow) as NavHostFragment).navController
+        binding.navView.setupWithNavController(navController)
     }
 }

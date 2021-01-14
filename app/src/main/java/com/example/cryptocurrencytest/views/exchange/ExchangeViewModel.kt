@@ -16,10 +16,7 @@ class ExchangeViewModel(private val repository: Repository) : ViewModel() {
     fun fetchCryptocurencyData() = repository.fetchCryptocurencyData()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            {
-                mutableLiveData.value = it
-                Log.d("log", it.toString())
-            },
-            { Log.d("log", "${it.message}") }
+            { mutableLiveData.value = it },
+            { Log.d("logi", "${it.message}") }
         )
 }

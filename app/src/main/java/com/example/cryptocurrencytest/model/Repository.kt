@@ -11,8 +11,7 @@ class Repository(private val cryptocurrencyService: CryptocurrencyService) {
 
     fun fetchCryptocurencyData(): Single<List<PrepareCryptocurrencyData>> =
         cryptocurrencyService.getCryptocurrency()
-            .map {
-                Mapper().invoke(it) }
+            .map { Mapper().invoke(it) }
             .subscribeOn(Schedulers.io())
 
     class Mapper : (CryptocurrencyList) -> List<PrepareCryptocurrencyData> {

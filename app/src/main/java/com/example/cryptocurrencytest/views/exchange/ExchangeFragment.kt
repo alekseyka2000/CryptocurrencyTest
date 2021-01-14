@@ -25,7 +25,6 @@ class ExchangeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         subscriptions = CompositeDisposable()
-
         subscriptions.add(exchangeViewModel.fetchCryptocurencyData())
     }
 
