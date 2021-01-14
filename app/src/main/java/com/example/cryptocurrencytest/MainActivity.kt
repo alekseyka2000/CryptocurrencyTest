@@ -19,9 +19,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         navController = this.findNavController(R.id.container)
-        navController.navigate(R.id.action_flowFragment_to_startFragment)
 
         Timer().schedule(2000) {
             navController.navigate(R.id.action_startFragment_to_flowFragment)

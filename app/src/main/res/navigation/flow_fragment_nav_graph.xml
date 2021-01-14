@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/flow_fragment_nav_graph">
+    android:id="@+id/flow_fragment_nav_graph"
+    app:startDestination="@id/cryptocurrencyListFragment">
 
     <fragment
         android:id="@+id/cryptocurrencyListFragment"
         android:name="com.example.cryptocurrencytest.views.cryptocurrentlist.CryptocurrencyListFragment"
-        android:label="fragment_exchange"
-        tools:layout="@layout/fragment_exchange" >
+        android:label="fragment_cryptocurrency_list"
+        tools:layout="@layout/fragment_cryptocurrency_list" >
         <action
             android:id="@+id/action_cryptocurrencyListFragment_to_exchangeFragment"
             app:destination="@id/exchangeFragment" />
@@ -16,7 +18,8 @@
     <fragment
         android:id="@+id/exchangeFragment"
         android:name="com.example.cryptocurrencytest.views.exchange.ExchangeFragment"
-        android:label="ExchangeFragment" >
+        android:label="fragment_exchange"
+        tools:layout="@layout/fragment_exchange" >
         <action
             android:id="@+id/action_exchangeFragment_to_cryptocurrencyListFragment"
             app:destination="@id/cryptocurrencyListFragment" />
