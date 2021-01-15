@@ -12,7 +12,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class ExchangeFragment : Fragment() {
 
     private val exchangeViewModel: ExchangeViewModel by viewModel()
-    private lateinit var subscriptions: CompositeDisposable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,12 +23,6 @@ class ExchangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        subscriptions = CompositeDisposable()
-        subscriptions.add(exchangeViewModel.fetchCryptocurencyData())
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        subscriptions.clear()
+        exchangeViewModel.fetchCryptocurencyData()
     }
 }

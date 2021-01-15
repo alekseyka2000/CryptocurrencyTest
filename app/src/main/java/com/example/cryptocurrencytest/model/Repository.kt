@@ -1,33 +1,23 @@
 package com.example.cryptocurrencytest.model
 
-import android.util.Log
 import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyService
+import com.example.cryptocurrencytest.model.db.CryptocurrencyDB
 import com.example.cryptocurrencytest.model.entity.CryptocurrencyList
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 
-class Repository(private val cryptocurrencyService: CryptocurrencyService) {
+class Repository(
+    private val cryptocurrencyService: CryptocurrencyService,
+    private val db: CryptocurrencyDB
+) {
+
 
     fun fetchCryptocurencyData(): Single<List<PrepareCryptocurrencyData>> =
         cryptocurrencyService.getCryptocurrency()
-            .map { Mapper().invoke(it) }
-            .subscribeOn(Schedulers.io())
+            .map { dataMapping(it) }
 
-    class Mapper : (CryptocurrencyList) -> List<PrepareCryptocurrencyData> {
-        override fun invoke(p1: CryptocurrencyList): List<PrepareCryptocurrencyData> {
-            val newList = mutableListOf<PrepareCryptocurrencyData>()
-            Log.d("logi", "it.toString()")
-            p1.data.forEach {
-                newList.add(
-                    PrepareCryptocurrencyData(
-                        it.symbol,
-                        it.name,
-                        it.quote.uSD.price + " $"
-                    )
-                )
-            }
-            return newList
+    private fun dataMapping(p1: CryptocurrencyList) =
+        p1.data.map {
+            PrepareCryptocurrencyData(it.symbol, it.name, it.quote.uSD.price + " $")
         }
-    }
 }

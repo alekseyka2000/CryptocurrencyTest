@@ -10,9 +10,7 @@
         android:name="com.example.cryptocurrencytest.views.FlowFragment"
         android:label="fragment_flow"
         tools:layout="@layout/fragment_flow" >
-        <action
-            android:id="@+id/action_flowFragment_to_startFragment"
-            app:destination="@id/startFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/startFragment"

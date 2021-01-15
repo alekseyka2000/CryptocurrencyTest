@@ -34,4 +34,9 @@ class FlowFragment : Fragment() {
             (childFragmentManager.findFragmentById(R.id.containerFlow) as NavHostFragment).navController
         binding.navView.setupWithNavController(navController)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
