@@ -10,7 +10,7 @@ data class BTC (
 	val category : String,
 	val description : String,
 	val slug : String,
-	val logo : String?,
+	val logo : String = "Empty",
 	val subreddit : String,
 	val notice : String,
 	val tags : List<String>,

@@ -13,7 +13,6 @@ class Repository(
     private val db: CryptocurrencyDB
 ) {
 
-
     fun fetchCryptocurencyData(): Single<List<PrepareCryptocurrencyData>> =
         cryptocurrencyService.getCryptocurrency()
             .map {
@@ -27,9 +26,9 @@ class Repository(
     private fun dataMapping(p1: CryptocurrencyList) = p1.data.map { data ->
         var symbol = "Empty"
         cryptocurrencyService.getCryptocurrencyMetadata(data.symbol)
-            .subscribe({
+            .subscribe({ logo ->
                 Log.d("TAG", "+")
-                symbol = "it.data.bTC.logo" ?: "Null"
+                symbol = logo.data.bTC.logo
             }, { e -> Log.e("TAG", e.message ?: "Error") })
         db.cryptocurrencyDAO().insertData(
             listOf(
