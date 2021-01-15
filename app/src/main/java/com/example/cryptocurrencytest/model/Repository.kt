@@ -28,7 +28,7 @@ class Repository(
         cryptocurrencyService.getCryptocurrencyMetadata(data.symbol)
             .subscribe({ logo ->
                 Log.d("TAG", "+")
-                symbol = logo.data.bTC.logo
+                symbol = "logo.data.bTC.logo"
             }, { e -> Log.e("TAG", e.message ?: "Error") })
         db.cryptocurrencyDAO().insertData(
             listOf(
