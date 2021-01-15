@@ -1,5 +1,6 @@
 package com.example.cryptocurrencytest.views.cryptocurrentlist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import kotlin.properties.Delegates
 
-class CryptocurrencyListAdapter(private val cellClickListener: (String) -> Unit) :
+class CryptocurrencyListAdapter(private val cellClickListener: (String) -> Unit, private val context: Context) :
     RecyclerView.Adapter<CryptocurrencyViewHolder>() {
 
     var listCryptocurrencys: List<PrepareCryptocurrencyData> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
@@ -16,7 +17,7 @@ class CryptocurrencyListAdapter(private val cellClickListener: (String) -> Unit)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptocurrencyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return CryptocurrencyViewHolder(inflater, parent)
+        return CryptocurrencyViewHolder(inflater, parent, context)
     }
 
     override fun onBindViewHolder(holder: CryptocurrencyViewHolder, position: Int) {

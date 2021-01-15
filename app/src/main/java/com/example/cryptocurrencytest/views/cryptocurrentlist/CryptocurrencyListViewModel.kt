@@ -18,6 +18,7 @@ class CryptocurrencyListViewModel(private val repository: Repository) : ViewMode
 
     fun fetchCryptocurencyData() {
         subscriptions = CompositeDisposable()
+        repository.fetchSymbolURL()
         subscriptions.add(repository.fetchCryptocurencyData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

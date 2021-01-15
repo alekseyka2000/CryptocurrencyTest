@@ -1,5 +1,6 @@
 package com.example.cryptocurrencytest.views.cryptocurrentlist
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,7 +32,7 @@ class CryptocurrencyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        contactAdapter = CryptocurrencyListAdapter { a: String -> itemClick(a) }
+        contactAdapter = CryptocurrencyListAdapter ({ a: String -> itemClick(a) }, activity as Context)
 
         binding.list.apply {
             layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.context)
