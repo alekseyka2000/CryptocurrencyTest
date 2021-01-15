@@ -5,7 +5,9 @@ import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyServ
 import com.example.cryptocurrencytest.model.db.CryptocurrencyDB
 import com.example.cryptocurrencytest.model.entity.CryptocurrencyDataDB
 import com.example.cryptocurrencytest.model.entity.CryptocurrencyList
+import com.example.cryptocurrencytest.model.entity.Data
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
+import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit
 
@@ -17,18 +19,21 @@ class Repository(
 
     fun fetchCryptocurencyData(): Single<List<PrepareCryptocurrencyData>> =
         cryptocurrencyService.getCryptocurrency()
-            .map {dataMapping(it) }
+            .map {
+                db.cryptocurrencyDAO().delete()
+                dataMapping(it)
+            }
 
     fun fetchSymbolURL() =
         cryptocurrencyService.getCryptocurrencyMetadata("BTC")
 
-    private fun dataMapping(p1: CryptocurrencyList) =
-        p1.data.map { data ->
-            var symbol = "Empty"
+    private fun dataMapping(p1: CryptocurrencyList): List<PrepareCryptocurrencyData> {
 
+//        Single.create<List<Data>> { emitter -> emitter.onSuccess(p1.data) }
+//            .delay
+        return p1.data.map { data ->
+            var symbol = "Empty"
             cryptocurrencyService.getCryptocurrencyMetadata(data.symbol)
-                .delay(50, TimeUnit.MILLISECONDS)
-                .doOnNext(item -> {
                 .subscribe({
                     Log.d("TAG", "+")
                     symbol = "it.data.bTC.logo" ?: "Null"
@@ -49,4 +54,6 @@ class Repository(
 
             PrepareCryptocurrencyData(symbol, data.name, data.quote.uSD.price + " $")
         }
+        //return emptyList()
+    }
 }
