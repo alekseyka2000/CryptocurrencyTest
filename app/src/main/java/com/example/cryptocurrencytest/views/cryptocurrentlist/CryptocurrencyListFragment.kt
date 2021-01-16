@@ -41,6 +41,7 @@ class CryptocurrencyListFragment : Fragment() {
         cryptocurrencyViewModel.liveData.observe(viewLifecycleOwner, { list ->
             contactAdapter.listCryptocurrencys = list
         })
+        // с чего вдруг вью у тебя указывает что вьюмодели делать
         cryptocurrencyViewModel.fetchCryptocurencyData()
     }
 

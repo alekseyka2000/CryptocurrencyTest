@@ -1,5 +1,7 @@
 package com.example.cryptocurrencytest.model.entity.currency
 
+// в Джаве/котлине всё же лучше использовать CamelCase, чтобы глаз не дёргался
+// если атк требует  апи -  клади в @SerializedName
 data class Data (
 	val id : Int,
 	val name : String,

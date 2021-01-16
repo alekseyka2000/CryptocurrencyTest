@@ -20,7 +20,7 @@ abstract class CryptocurrencyDB : RoomDatabase() {
                 val instance = (Room.databaseBuilder(
                     context.applicationContext,
                     CryptocurrencyDB::class.java,
-                    "cryptocurrency_database"
+                    "cryptocurrency_database" // вынеси в константу, в коде не должно быть таких магических чисел и строк
                 ).build() )
                 INSTANCE = instance
                 instance
