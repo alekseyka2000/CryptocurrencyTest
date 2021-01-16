@@ -41,7 +41,7 @@ class CryptocurrencyListViewModel(private val repository: Repository) : ViewMode
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { sendRequestIn1Minute(it) },
-                    { Log.d("logi", "${it.message}") }
+                    { Log.d("TAG", "${it.message}") }
                 )
         )
     }
@@ -73,7 +73,7 @@ class CryptocurrencyListViewModel(private val repository: Repository) : ViewMode
         }
     }
 
-    fun fetchDataFromDB() {
+    private fun fetchDataFromDB() {
         subscriptions.add(
             repository.fetchDataFromDB()
                 .subscribeOn(Schedulers.io())
