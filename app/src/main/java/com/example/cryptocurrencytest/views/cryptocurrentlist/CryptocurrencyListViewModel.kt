@@ -22,43 +22,66 @@ class CryptocurrencyListViewModel(private val repository: Repository) : ViewMode
     fun fetchCryptocurencyData() {
         subscriptions = CompositeDisposable()
         getCryptocurencyList()
+        fetchDataFromDB()
     }
 
     private fun getCryptocurencyList() {
         subscriptions.add(
             repository.fetchCryptocurencyData()
                 .map {
-                    it.data
+                    var list = it.data
+                    val listOfList = mutableListOf<List<Data>>()
+                    while (list.isNotEmpty()) {
+                        listOfList.add(list.take(25))
+                        list = list.takeLast(list.size - 25)
+                    }
+                    listOfList
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { request(it) },
-                    // { mutableLiveData.value = it },
+                    { sendRequestIn1Minute(it) },
                     { Log.d("logi", "${it.message}") }
                 )
         )
     }
 
-    fun request(list: List<Data>) {
+    private fun sendRequestIn1Minute(listRequests: List<List<Data>>) {
+        getCryptocurrencyImageURL(listRequests[0])
         subscriptions.add(Observable.zip(
-            Observable.interval(2, TimeUnit.SECONDS),
-            Observable.fromIterable(list)
-        ) { _, list -> list }
+            Observable.interval(60, TimeUnit.SECONDS),
+            Observable.fromIterable(listRequests.takeLast(listRequests.size - 1))
+        ) { _, currencyDataList -> currencyDataList }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { currencyData ->
                 getCryptocurrencyImageURL(currencyData)
             }
         )
     }
 
-    fun getCryptocurrencyImageURL(currencyData: Data) {
-        subscriptions.add(repository.fetchSymbolURL(currencyData)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { Log.d("TAG", it) },
-                { Log.d("TAG", "${it.message}") }
+    private fun getCryptocurrencyImageURL(currencyDataList: List<Data>) {
+        currencyDataList.forEach { currencyData ->
+            subscriptions.add(
+                repository.fetchSymbolURL(currencyData)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(
+                        { repository.insertCurrencyData(currencyData, it) },
+                        { Log.d("TAG", "${it.message}") }
+                    )
             )
+        }
+    }
+
+    fun fetchDataFromDB() {
+        subscriptions.add(
+            repository.fetchDataFromDB()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { mutableLiveData.value = it },
+                    { Log.d("TAG", "${it.message}") }
+                )
         )
     }
 

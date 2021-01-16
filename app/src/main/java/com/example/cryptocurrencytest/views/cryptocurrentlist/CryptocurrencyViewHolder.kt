@@ -18,11 +18,10 @@ class CryptocurrencyViewHolder(inflater: LayoutInflater, parent: ViewGroup, priv
     private var cryptocurrencyPriceUSDText: TextView = itemView.findViewById(R.id.cryptocurrencyPriceUDS)
 
     fun bind(cryptocurrency: PrepareCryptocurrencyData) {
-//        Glide
-//            .with(context)
-//            .load(cryptocurrency.imageReference)
-//            .into(cryptocurrencyImageView)
-        cryptocurrencyImageView.setImageResource(R.drawable.ic_bitcoin)
+        Glide
+            .with(context)
+            .load(cryptocurrency.imageReference)
+            .into(cryptocurrencyImageView)
         cryptocurrencyNameText.text = cryptocurrency.cryptocurrencyName
         cryptocurrencyPriceUSDText.text = cryptocurrency.cryptocurrencyPriceUSD
     }
