@@ -22,7 +22,7 @@ class ExchangeViewModel(private val repository: Repository) : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { mutableLiveData.value = it },
+                { },//mutableLiveData.value = it },
                 { Log.d("logi", "${it.message}") }
             )
         )

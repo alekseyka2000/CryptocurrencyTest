@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.model.entity
+package com.example.cryptocurrencytest.model.entity.currency
 
 data class USD (
 	val price : String,

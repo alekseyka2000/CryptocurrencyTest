@@ -1,4 +1,4 @@
-package com.example.cryptocurrencytest.model.entity
+package com.example.cryptocurrencytest.model.entity.currency
 
 import com.google.gson.annotations.SerializedName
 
