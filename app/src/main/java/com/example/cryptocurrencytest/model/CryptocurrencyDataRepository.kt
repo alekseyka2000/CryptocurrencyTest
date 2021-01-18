@@ -14,7 +14,7 @@ import io.reactivex.Single
 */
 
 // название класса ни о чём не говорит
-class Repository(
+class CryptocurrencyDataRepository(
     private val cryptocurrencyService: CryptocurrencyService,
     private val db: CryptocurrencyDB
 ) {

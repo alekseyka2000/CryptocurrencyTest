@@ -38,11 +38,9 @@ class CryptocurrencyListFragment : Fragment() {
             layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.context)
             adapter = contactAdapter
         }
-        cryptocurrencyViewModel.liveData.observe(viewLifecycleOwner, { list ->
+        cryptocurrencyViewModel.cryptocurrencyLiveData.observe(viewLifecycleOwner, { list ->
             contactAdapter.listCryptocurrencys = list
         })
-        // с чего вдруг вью у тебя указывает что вьюмодели делать
-        cryptocurrencyViewModel.fetchCryptocurencyData()
     }
 
     private fun itemClick(name: String) {

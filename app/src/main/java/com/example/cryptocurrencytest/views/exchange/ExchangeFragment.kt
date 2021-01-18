@@ -19,10 +19,4 @@ class ExchangeFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_exchange, container, false)
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        exchangeViewModel.fetchCryptocurencyData()
-    }
 }
