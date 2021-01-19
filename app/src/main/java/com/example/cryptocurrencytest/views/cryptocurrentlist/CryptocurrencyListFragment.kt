@@ -38,9 +38,11 @@ class CryptocurrencyListFragment : Fragment() {
             layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.context)
             adapter = contactAdapter
         }
+        Log.d("Creation order", "F")
         cryptocurrencyViewModel.cryptocurrencyLiveData.observe(viewLifecycleOwner, { list ->
             contactAdapter.listCryptocurrencys = list
         })
+        Log.d("Creation order", "F2")
     }
 
     private fun itemClick(name: String) {

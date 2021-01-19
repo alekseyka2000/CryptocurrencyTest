@@ -13,7 +13,6 @@ import io.reactivex.Single
 В целом, кириллица в коде не ок, все поясняющие комментарии и документация должны быть на английском.
 */
 
-// название класса ни о чём не говорит
 class CryptocurrencyDataRepository(
     private val cryptocurrencyService: CryptocurrencyService,
     private val db: CryptocurrencyDB

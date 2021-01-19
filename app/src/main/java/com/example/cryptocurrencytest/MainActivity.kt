@@ -14,12 +14,4 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
-
-    override fun onStart() {
-        super.onStart()
-        Timer().schedule(2000) {
-            this@MainActivity.findNavController(R.id.container)
-                .navigate(R.id.action_startFragment_to_flowFragment)
-        }
-    }
 }

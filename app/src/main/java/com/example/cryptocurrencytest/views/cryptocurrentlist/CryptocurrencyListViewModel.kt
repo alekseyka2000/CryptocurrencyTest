@@ -6,14 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import com.example.cryptocurrencytest.model.CryptocurrencyDataRepository
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import com.example.cryptocurrencytest.model.entity.currency.Data
-import com.example.cryptocurrencytest.model.mapper.Mapper
 import com.example.cryptocurrencytest.model.mapper.MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements
 import com.example.cryptocurrencytest.views.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import java.util.stream.Collectors.mapping
 
 class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: CryptocurrencyDataRepository) : BaseViewModel() {
 
@@ -21,6 +19,7 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
     val cryptocurrencyLiveData: LiveData<List<PrepareCryptocurrencyData>> = cryptocurrencyMutableLiveData
 
     init {
+        Log.d("Creation order", "VM")
         getCryptocurencyList()
         fetchDataFromDB()
     }
@@ -28,7 +27,6 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
     private fun getCryptocurencyList() {
         subscriptions.add(
             cryptocurrencyDataRepository.fetchCryptocurencyData()
-                // маппинг в классе или хоть отдельном методе
                 .map {
                     val list = MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements().map(it)
                     list
@@ -50,10 +48,9 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
     private fun sendRequestIn1Minute(listRequests: List<List<Data>>) {
         getCryptocurrencyImageURL(listRequests.first())
         //  нечитабельно, исправь
-        subscriptions.add(Observable.zip(
-            Observable.interval(60, TimeUnit.SECONDS),
-            Observable.fromIterable(listRequests.takeLast(listRequests.size - 1))
-        ) { _, currencyDataList -> currencyDataList }// тут красным подчеркивает - ??? грязь в готовом коде быть не должно
+        val timer = Observable.interval(60, TimeUnit.SECONDS)
+        val cryptocurrencyList = Observable.fromIterable(listRequests.takeLast(listRequests.size - 1))
+        subscriptions.add(Observable.zip(timer, cryptocurrencyList) { _, currencyDataList -> currencyDataList }// тут красным подчеркивает - ??? грязь в готовом коде быть не должно
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { currencyData ->
@@ -88,6 +85,7 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
     }
 
     override fun onCleared() {
+        Log.d("Creation order", "VM2")
         super.onCleared()
         subscriptions.clear()
     }
