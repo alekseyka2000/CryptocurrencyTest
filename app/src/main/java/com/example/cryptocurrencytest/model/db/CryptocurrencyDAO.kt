@@ -15,7 +15,7 @@ interface CryptocurrencyDAO {
     fun getDataList(): Observable<List<CryptocurrencyDataDB>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertData(list: List<CryptocurrencyDataDB>)
+    fun insertData(cryptocurrencyData: CryptocurrencyDataDB)
 
     @Update
     fun updateData(list: List<CryptocurrencyDataDB>)

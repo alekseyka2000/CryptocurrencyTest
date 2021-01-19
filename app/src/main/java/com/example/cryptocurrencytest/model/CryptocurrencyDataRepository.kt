@@ -2,11 +2,13 @@ package com.example.cryptocurrencytest.model
 
 import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyService
 import com.example.cryptocurrencytest.model.db.CryptocurrencyDB
-import com.example.cryptocurrencytest.model.entity.CryptocurrencyDataDB
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import com.example.cryptocurrencytest.model.entity.currency.Data
+import com.example.cryptocurrencytest.model.mapper.MapperCryptocurrencyDataDBToPrepareCryptocurrencyData
+import com.example.cryptocurrencytest.model.mapper.MapperCurrencyDataToCryptocurrencyDataDB
 import io.reactivex.Observable
 import io.reactivex.Single
+
 /*
 * я пишу комментарии тебе кириллицей на русском чтобы ты точно меня понял.
 После исправления они все должны быть удалены.
@@ -35,20 +37,7 @@ class CryptocurrencyDataRepository(
 
     fun fetchDataFromDB(): Observable<List<PrepareCryptocurrencyData>> {
         return db.cryptocurrencyDAO().getDataList().map {
-            // маппинг в отдельном маппере
-            val dataList = mutableListOf<PrepareCryptocurrencyData>()
-            // Испольузй это при маппинге листа - красивее, удобнее
-            // val mappedList = it.map {  }
-            it.forEach { data ->
-                dataList.add(
-                    PrepareCryptocurrencyData(
-                        imageReference = data.imageReference,
-                        cryptocurrencyName = data.cryptocurrencyName,
-                        cryptocurrencyPriceUSD = data.cryptocurrencyPriceUSD
-                    )
-                )
-            }
-            return@map dataList
+            MapperCryptocurrencyDataDBToPrepareCryptocurrencyData().map(it)
         }
     }
 
@@ -60,19 +49,7 @@ class CryptocurrencyDataRepository(
      */
     fun insertCurrencyData(currencyData: Data, symbol: String) {
         db.cryptocurrencyDAO().insertData(
-            // зачем создавать лист из 1го объекта?
-            listOf(
-                // маппинг в отдельном маппере
-                CryptocurrencyDataDB(
-                    imageReference = symbol,
-                    cryptocurrencyName = currencyData.name,
-                    cryptocurrencyPriceUSD = currencyData.quote.uSD.price,
-                    symbol = currencyData.symbol,
-                    slug = currencyData.slug,
-                    numMarketPairs = currencyData.num_market_pairs,
-                    dateAdded = currencyData.date_added
-                )
-            )
+            MapperCurrencyDataToCryptocurrencyDataDB().map(Pair(currencyData, symbol))
         )
     }
 }
