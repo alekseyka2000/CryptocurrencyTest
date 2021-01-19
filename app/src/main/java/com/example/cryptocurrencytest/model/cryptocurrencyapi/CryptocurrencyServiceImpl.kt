@@ -9,7 +9,7 @@ class CryptocurrencyServiceImpl(
     private val apiFactory: ApiFactory = ApiFactoryImpl()
 ) : CryptocurrencyService {
 
-    override fun getCryptocurrency(): Observable<CryptocurrencyList> =
+    override fun makeGetCryptocurrencyDataRequest(): Observable<CryptocurrencyList> =
         apiFactory.getApiServiceForCurrencyList().getCryptocurrencyPriceList()
 
     override fun getCryptocurrencyMetadata(symbol: String): Single<ResponseBody> =

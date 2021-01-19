@@ -20,13 +20,13 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
 
     init {
         Log.d("Creation order", "VM")
-        getCryptocurencyList()
-        fetchDataFromDB()
+        updateCryptocurrencyList()
+        getDataFromDB()
     }
 
-    private fun getCryptocurencyList() {
+    private fun updateCryptocurrencyList() {
         subscriptions.add(
-            cryptocurrencyDataRepository.fetchCryptocurencyData()
+            cryptocurrencyDataRepository.updateCryptocurrencyData()
                 .map {
                     val list = MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements().map(it)
                     list
@@ -62,7 +62,7 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
     private fun getCryptocurrencyImageURL(currencyDataList: List<Data>) {
         currencyDataList.forEach { currencyData ->
             subscriptions.add(
-                cryptocurrencyDataRepository.fetchSymbolURL(currencyData)
+                cryptocurrencyDataRepository.getSymbolURL(currencyData)
                     .subscribeOn(Schedulers.io())
                     .subscribe(
                         { cryptocurrencyDataRepository.insertCurrencyData(currencyData, it) },
@@ -72,9 +72,9 @@ class CryptocurrencyListViewModel(private val cryptocurrencyDataRepository: Cryp
         }
     }
 
-    private fun fetchDataFromDB() {
+    private fun getDataFromDB() {
         subscriptions.add(
-            cryptocurrencyDataRepository.fetchDataFromDB()
+            cryptocurrencyDataRepository.getDataFromDB()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

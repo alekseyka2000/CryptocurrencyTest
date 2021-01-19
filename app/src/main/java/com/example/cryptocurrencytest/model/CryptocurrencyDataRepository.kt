@@ -9,21 +9,14 @@ import com.example.cryptocurrencytest.model.mapper.MapperCurrencyDataToCryptocur
 import io.reactivex.Observable
 import io.reactivex.Single
 
-/*
-* я пишу комментарии тебе кириллицей на русском чтобы ты точно меня понял.
-После исправления они все должны быть удалены.
-В целом, кириллица в коде не ок, все поясняющие комментарии и документация должны быть на английском.
-*/
-
 class CryptocurrencyDataRepository(
     private val cryptocurrencyService: CryptocurrencyService,
     private val db: CryptocurrencyDB
 ) {
 
-    // fetch - не ошибка, но обычно в названиях методов используется get
-    fun fetchCryptocurencyData() = cryptocurrencyService.getCryptocurrency()
+    fun updateCryptocurrencyData() = cryptocurrencyService.makeGetCryptocurrencyDataRequest()
 
-    fun fetchSymbolURL(currencyData: Data): Single<String> {
+    fun getSymbolURL(currencyData: Data): Single<String> {
         return cryptocurrencyService.getCryptocurrencyMetadata(currencyData.symbol)
             //что это за маппинг? непонятно.
             // Добавь комментарий и/или вынеси в отдельный метод с говорящим названием,
@@ -35,7 +28,7 @@ class CryptocurrencyDataRepository(
             .map { it.string().split("\",\"logo\":\"")[1].split("\",\"subreddit\":\"")[0] }
     }
 
-    fun fetchDataFromDB(): Observable<List<PrepareCryptocurrencyData>> {
+    fun getDataFromDB(): Observable<List<PrepareCryptocurrencyData>> {
         return db.cryptocurrencyDAO().getDataList().map {
             MapperCryptocurrencyDataDBToPrepareCryptocurrencyData().map(it)
         }
