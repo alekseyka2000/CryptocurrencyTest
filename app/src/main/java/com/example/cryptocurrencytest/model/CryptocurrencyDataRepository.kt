@@ -1,47 +1,75 @@
 package com.example.cryptocurrencytest.model
 
+import android.util.Log
 import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyService
 import com.example.cryptocurrencytest.model.db.CryptocurrencyDB
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import com.example.cryptocurrencytest.model.entity.currency.Data
 import com.example.cryptocurrencytest.model.mapper.MapperCryptocurrencyDataDBToPrepareCryptocurrencyData
+import com.example.cryptocurrencytest.model.mapper.MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements
 import com.example.cryptocurrencytest.model.mapper.MapperCurrencyDataToCryptocurrencyDataDB
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 class CryptocurrencyDataRepository(
     private val cryptocurrencyService: CryptocurrencyService,
     private val db: CryptocurrencyDB
 ) {
 
-    fun updateCryptocurrencyData() = cryptocurrencyService.makeGetCryptocurrencyDataRequest()
-
-    fun getSymbolURL(currencyData: Data): Single<String> {
-        return cryptocurrencyService.getCryptocurrencyMetadata(currencyData.symbol)
-            //что это за маппинг? непонятно.
-            // Добавь комментарий и/или вынеси в отдельный метод с говорящим названием,
-            // может даже в отдельный класс.
-            //
-            // У меня есть подозрение что тут какие-то проблемы с десериализацией -
-            // вероятно, нужно решить проблему более централизованно, где-то в апи билдере,
-            // например, написать кастомный gson-deserializer для какого-то типа.
-            .map { it.string().split("\",\"logo\":\"")[1].split("\",\"subreddit\":\"")[0] }
+    fun updateCryptocurrencyData(): Observable<Pair<Boolean, Disposable>> {
+        return cryptocurrencyService.makeGetCryptocurrencyDataRequest()
+            .map {
+                val list = MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements().map(it)
+                prepareRequestsPackages(list)
+            }
     }
 
-    fun getDataFromDB(): Observable<List<PrepareCryptocurrencyData>> {
-        return db.cryptocurrencyDAO().getDataList().map {
-            MapperCryptocurrencyDataDBToPrepareCryptocurrencyData().map(it)
+    //separate list on a parts by 25, because if will send more then 25 requests in 1 minute to server get error 429
+    private fun prepareRequestsPackages(listRequests: List<List<Data>>): Pair<Boolean, Disposable> {
+        //get data about first 25 currencies
+        var updateIsSucces = getCryptocurrencyImageURL(listRequests.first())
+        val timer = Observable.interval(60, TimeUnit.SECONDS)
+        val cryptocurrencyList =
+            Observable.fromIterable(listRequests.takeLast(listRequests.size - 1))
+        val disposable = Observable.zip(timer, cryptocurrencyList) { _, currencyDataList -> currencyDataList }
+            .subscribe( { currencyData ->
+                updateIsSucces = updateIsSucces.and(getCryptocurrencyImageURL(currencyData)) },
+            {})
+        return Pair(updateIsSucces, disposable)
+    }
+
+    private fun getCryptocurrencyImageURL(currencyDataList: List<Data>): Boolean {
+        var insertRowsCounter = 0
+        currencyDataList.forEach { currencyData ->
+            getSymbolURL(currencyData).map { insertCurrencyData(currencyData, it) }
+                .subscribe({ insertRowsCounter++ },
+                    {
+                        Log.d(
+                            "TAG",
+                            "Insert data in the database about ${currencyData.name} failed"
+                        )
+                    })
         }
+        return insertRowsCounter == currencyDataList.size
     }
 
-    /*
-    нет обработки ошибок. Если что-то пойдёт не так - крашнется вся прилага, если строки не вставятся - ты об этом не узнаешь.
-    Подсказка - все операции в БД возвращают какой-то результат, чекни документацю по руму.
-    Подсказка 2 - Дальше этого метода этот результат уйти не должен,
-    лучше возвращай Compeltable, который может вернуть ошибку в случае чего
-     */
-    fun insertCurrencyData(currencyData: Data, symbol: String) {
-        db.cryptocurrencyDAO().insertData(
+    private fun getSymbolURL(currencyData: Data): Single<String> {
+        return cryptocurrencyService.getCryptocurrencyMetadata(currencyData.symbol)
+            //problem with response serialization, cannot get data as data class
+            //so get result as string and fetch url from it
+            .map {
+                it.string().split("\",\"logo\":\"").last()
+                    .split("\",\"subreddit\":\"").first()
+            }
+    }
+
+    fun getDataFromDB() = db.cryptocurrencyDAO().getDataList()
+
+    private fun insertCurrencyData(currencyData: Data, symbol: String): Completable {
+        return db.cryptocurrencyDAO().insertData(
             MapperCurrencyDataToCryptocurrencyDataDB().map(Pair(currencyData, symbol))
         )
     }

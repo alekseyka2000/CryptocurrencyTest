@@ -1,5 +1,6 @@
 package com.example.cryptocurrencytest.di
 
+import com.example.cryptocurrencytest.domain.CryptocurrencyDataFilter
 import com.example.cryptocurrencytest.model.CryptocurrencyDataRepository
 import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyService
 import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyServiceImpl
@@ -13,8 +14,14 @@ val cryptocurrencyServiceModule = module {
     single<CryptocurrencyService> { CryptocurrencyServiceImpl() }
     single { CryptocurrencyDB.getDB(get()) }
     single { CryptocurrencyDataRepository(cryptocurrencyService = get(), db = get()) }
+    single { CryptocurrencyDataFilter(repository = get()) }
 }
 val viewModelModule = module {
-    viewModel { CryptocurrencyListViewModel(cryptocurrencyDataRepository= get()) }
+    viewModel {
+        CryptocurrencyListViewModel(
+            cryptocurrencyDataFilter = get(),
+            cryptocurrencyDataRepository = get()
+        )
+    }
     viewModel { ExchangeViewModel(cryptocurrencyDataRepository = get()) }
 }

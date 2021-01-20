@@ -15,7 +15,7 @@ class ExchangeViewModel(private val cryptocurrencyDataRepository: Cryptocurrency
     val cryptocurrencyLiveData: LiveData<List<PrepareCryptocurrencyData>> = cryptocurrencyMutableLiveData
 
     init {
-        subscriptions.add(cryptocurrencyDataRepository.fetchCryptocurencyData()
+        subscriptions.add(cryptocurrencyDataRepository.updateCryptocurrencyData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

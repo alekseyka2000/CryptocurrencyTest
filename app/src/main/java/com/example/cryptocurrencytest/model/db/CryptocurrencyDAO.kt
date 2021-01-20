@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import com.example.cryptocurrencytest.model.entity.CryptocurrencyDataDB
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 @Dao
@@ -14,8 +15,8 @@ interface CryptocurrencyDAO {
     @Query("SELECT * FROM cryptocurrency")
     fun getDataList(): Observable<List<CryptocurrencyDataDB>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertData(cryptocurrencyData: CryptocurrencyDataDB)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertData(cryptocurrencyData: CryptocurrencyDataDB): Completable
 
     @Update
     fun updateData(list: List<CryptocurrencyDataDB>)
