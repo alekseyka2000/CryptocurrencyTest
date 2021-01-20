@@ -3,9 +3,7 @@ package com.example.cryptocurrencytest.model
 import android.util.Log
 import com.example.cryptocurrencytest.model.cryptocurrencyapi.CryptocurrencyService
 import com.example.cryptocurrencytest.model.db.CryptocurrencyDB
-import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import com.example.cryptocurrencytest.model.entity.currency.Data
-import com.example.cryptocurrencytest.model.mapper.MapperCryptocurrencyDataDBToPrepareCryptocurrencyData
 import com.example.cryptocurrencytest.model.mapper.MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements
 import com.example.cryptocurrencytest.model.mapper.MapperCurrencyDataToCryptocurrencyDataDB
 import io.reactivex.Completable
@@ -17,9 +15,9 @@ import java.util.concurrent.TimeUnit
 class CryptocurrencyDataRepository(
     private val cryptocurrencyService: CryptocurrencyService,
     private val db: CryptocurrencyDB
-) {
+): DataRepository {
 
-    fun updateCryptocurrencyData(): Observable<Pair<Boolean, Disposable>> {
+    override fun updateCryptocurrencyData(): Observable<Pair<Boolean, Disposable>> {
         return cryptocurrencyService.makeGetCryptocurrencyDataRequest()
             .map {
                 val list = MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements().map(it)
@@ -34,10 +32,12 @@ class CryptocurrencyDataRepository(
         val timer = Observable.interval(60, TimeUnit.SECONDS)
         val cryptocurrencyList =
             Observable.fromIterable(listRequests.takeLast(listRequests.size - 1))
-        val disposable = Observable.zip(timer, cryptocurrencyList) { _, currencyDataList -> currencyDataList }
-            .subscribe( { currencyData ->
-                updateIsSucces = updateIsSucces.and(getCryptocurrencyImageURL(currencyData)) },
-            {})
+        val disposable =
+            Observable.zip(timer, cryptocurrencyList) { _, currencyDataList -> currencyDataList }
+                .subscribe({ currencyData ->
+                    updateIsSucces = updateIsSucces.and(getCryptocurrencyImageURL(currencyData))
+                },
+                    {})
         return Pair(updateIsSucces, disposable)
     }
 
@@ -66,7 +66,7 @@ class CryptocurrencyDataRepository(
             }
     }
 
-    fun getDataFromDB() = db.cryptocurrencyDAO().getDataList()
+    override fun getData() = db.cryptocurrencyDAO().getDataList()
 
     private fun insertCurrencyData(currencyData: Data, symbol: String): Completable {
         return db.cryptocurrencyDAO().insertData(

@@ -3,7 +3,7 @@ package com.example.cryptocurrencytest.views.cryptocurrentlist
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.cryptocurrencytest.domain.CryptocurrencyDataFilter
+import com.example.cryptocurrencytest.domain.DataFilter
 import com.example.cryptocurrencytest.model.CryptocurrencyDataRepository
 import com.example.cryptocurrencytest.model.entity.PrepareCryptocurrencyData
 import com.example.cryptocurrencytest.views.BaseViewModel
@@ -11,9 +11,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class CryptocurrencyListViewModel(
-    private val cryptocurrencyDataFilter: CryptocurrencyDataFilter,
-    private val cryptocurrencyDataRepository: CryptocurrencyDataRepository) :
-    BaseViewModel() {
+    private val cryptocurrencyDataFilter: DataFilter
+) : BaseViewModel() {
 
     private val cryptocurrencyMutableLiveData = MutableLiveData<List<PrepareCryptocurrencyData>>()
     val cryptocurrencyLiveData: LiveData<List<PrepareCryptocurrencyData>> =
@@ -26,7 +25,7 @@ class CryptocurrencyListViewModel(
 
     private fun updateCryptocurrencyList() {
         subscriptions.add(
-            cryptocurrencyDataRepository.updateCryptocurrencyData()
+            cryptocurrencyDataFilter.updateCryptocurrencyData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
