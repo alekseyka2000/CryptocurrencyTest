@@ -6,6 +6,7 @@ import io.reactivex.Single
 import okhttp3.ResponseBody
 
 interface CryptocurrencyService {
+    // унифицируй нейминг
     fun makeGetCryptocurrencyDataRequest(): Observable<CryptocurrencyList>
     fun getCryptocurrencyMetadata(symbol: String): Single<ResponseBody>
 }

@@ -18,6 +18,7 @@ class CryptocurrencyListFragment : Fragment() {
     private var _binding: FragmentCryptocurrencyListBinding? = null
     private val binding get() = _binding!!
     private val cryptocurrencyViewModel: CryptocurrencyListViewModel by viewModel()
+    // мадаптеры почти всегда можно инициализировать через lazy, не будет проблем с контекстом и красиво
     private lateinit var contactAdapter: CryptocurrencyListAdapter
 
     override fun onCreateView(

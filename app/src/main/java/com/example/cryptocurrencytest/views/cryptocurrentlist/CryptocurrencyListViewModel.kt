@@ -23,6 +23,13 @@ class CryptocurrencyListViewModel(
         getData()
     }
 
+    // хорошо что всё унёс в репозиторий, найс
+
+    // чуть хуже, что у тебя вьюмодель инициализирует обновление данных, но возможно
+    // плохо то,что ей это по сути не очень-то и надо, данных она с этого не получает
+    // можно сделать так, чтобы запрос в БД запускал их обновление - на уровне логики или данных
+    // или пусть тут хотя бы будет подписка на Completable, данные-то тут не нужны
+    //
     private fun updateCryptocurrencyList() {
         subscriptions.add(
             cryptocurrencyDataFilter.updateCryptocurrencyData()

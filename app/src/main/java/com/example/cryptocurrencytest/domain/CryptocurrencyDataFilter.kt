@@ -9,6 +9,7 @@ import io.reactivex.disposables.Disposable
 class CryptocurrencyDataFilter(private val repository: DataRepository): DataFilter {
     override fun getData(): Observable<List<PrepareCryptocurrencyData>> {
         return repository.getData().map {
+            // где мы создаём объекты? (не тут)
             MapperCryptocurrencyDataDBToPrepareCryptocurrencyData()
                 .map(it.sortedByDescending { by -> by.numMarketPairs })
         }

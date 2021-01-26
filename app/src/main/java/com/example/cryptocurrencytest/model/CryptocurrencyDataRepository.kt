@@ -20,10 +20,21 @@ class CryptocurrencyDataRepository(
     override fun updateCryptocurrencyData(): Observable<Pair<Boolean, Disposable>> {
         return cryptocurrencyService.makeGetCryptocurrencyDataRequest()
             .map {
+                // где мы создаём объекты? (не тут)
+                // зачем тебе каждый раз создавать новый маппер?
                 val list = MapperCryptocurrencyListToListOfCryptocurrencyListBy25Elements().map(it)
                 prepareRequestsPackages(list)
             }
     }
+
+    // любопытный подход, конечно, подписываться в одном месте, диспозить  в другом. Как правило, подписки всегда делаются в одном мест
+    // Было бы гораздо проще разрешить вообдще всю эту загрузку картинок через blockingGet()
+    // т. е. сделать один синхронный метод, который на вход получает список твоих айтемов,
+    // для каждого последовательно делает запрос в сеть и сохраняет в БД. Всё это без реактивщины, просто всё в одном потоке подряд и пишешь, как обычный код
+    // а потом этот метод вызываешь как Completable, хоть отдельно, хоть к updateCryptocurrencyData в цепочку добавляй
+
+
+    // по-моему, минута это дофига, наверняка можно чаще запросы делать
 
     //separate list on a parts by 25, because if will send more then 25 requests in 1 minute to server get error 429
     private fun prepareRequestsPackages(listRequests: List<List<Data>>): Pair<Boolean, Disposable> {

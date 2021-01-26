@@ -18,6 +18,8 @@ class CryptocurrencyViewHolder(inflater: LayoutInflater, parent: ViewGroup, priv
     private var cryptocurrencyPriceUSDText: TextView = itemView.findViewById(R.id.cryptocurrencyPriceUDS)
 
     fun bind(cryptocurrency: PrepareCryptocurrencyData) {
+        // я думаю, утт стоит очищать или ставить дефолтную картинку перед запуском глайда
+        // сейчас у тебя будет отображаться картинка предыдущей модельки пока не загрузится новая, если вообще загрузится.
         Glide
             .with(context)
             .load(cryptocurrency.imageReference)
